@@ -1,0 +1,17 @@
+{
+  "api_key": "teste",
+  "mysql": [
+    {
+      "host": "localhost",
+      "port": "3306",
+      "user": "autenticador1",
+      "pass": "autenticador1"
+    },
+    {
+      "host": "localhost",
+      "port": "3306",
+      "user": "autenticador2",
+      "pass": "autenticador2"
+    }
+  ]
+}
