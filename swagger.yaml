@@ -20,7 +20,7 @@ paths:
       \ Requisições do mesmo IP ou usuário com a senha errada 5 vezes entrão na fila de bloqueio e permanecem lá por 3 min. *Podendomos futuramente colocar o IP do cliente no FireWall do SO.*\n\
       \ O sistema de autenticação tem como restrição senhas de no mínimo 6 caracteres e no máximo 200.\n\
         \ As autenticação tem como resposta OK, 200, ou erro de autenticação.\n"
-      operationId: "validaAutenticacao"
+      operationId: "validaCredenciais"
       consumes:
       - "application/json"
       parameters:
@@ -28,12 +28,14 @@ paths:
         in: "body"
         required: true
         schema:
-          $ref: "#/definitions/Autenticacao"
+          $ref: "#/definitions/Credenciais"
       responses:
-        201:
-          description: "Status 200"
+        200:
+          description: "Status 200, Success"
+        401:
+          description: "Status 401, StatusUnauthorized"
         500:
-          description: "Status 500"
+          description: "Status 500, StatusInternalServerError"
           schema:
             $ref: "#/definitions/Erro"
 securityDefinitions:
@@ -47,7 +49,7 @@ definitions:
     properties:
       Mensagem:
         type: "string"
-  Autenticacao:
+  Credenciais:
     type: "object"
     required:
     - "usuario"
@@ -60,7 +62,7 @@ definitions:
         maxLength: 200
       senha:
         type: "string"
-        description: "Senha do circuito"
+        description: "Senha de acesso"
         minLength: 1
         maxLength: 200
   Token:

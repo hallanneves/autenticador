@@ -41,8 +41,8 @@ func NewAutenticadorAPI(spec *loads.Document) *AutenticadorAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		JSONProducer:        runtime.JSONProducer(),
-		AuthValidaAutenticacaoHandler: auth.ValidaAutenticacaoHandlerFunc(func(params auth.ValidaAutenticacaoParams, principal *models.Token) middleware.Responder {
-			return middleware.NotImplemented("operation AuthValidaAutenticacao has not yet been implemented")
+		AuthValidaCredenciaisHandler: auth.ValidaCredenciaisHandlerFunc(func(params auth.ValidaCredenciaisParams, principal *models.Token) middleware.Responder {
+			return middleware.NotImplemented("operation AuthValidaCredenciais has not yet been implemented")
 		}),
 
 		// Applies when the "api_key" header is set
@@ -91,8 +91,8 @@ type AutenticadorAPI struct {
 	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
 	APIAuthorizer runtime.Authorizer
 
-	// AuthValidaAutenticacaoHandler sets the operation handler for the valida autenticacao operation
-	AuthValidaAutenticacaoHandler auth.ValidaAutenticacaoHandler
+	// AuthValidaCredenciaisHandler sets the operation handler for the valida credenciais operation
+	AuthValidaCredenciaisHandler auth.ValidaCredenciaisHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -160,8 +160,8 @@ func (o *AutenticadorAPI) Validate() error {
 		unregistered = append(unregistered, "APIKeyAuth")
 	}
 
-	if o.AuthValidaAutenticacaoHandler == nil {
-		unregistered = append(unregistered, "auth.ValidaAutenticacaoHandler")
+	if o.AuthValidaCredenciaisHandler == nil {
+		unregistered = append(unregistered, "auth.ValidaCredenciaisHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -278,7 +278,7 @@ func (o *AutenticadorAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/auth"] = auth.NewValidaAutenticacao(o.context, o.AuthValidaAutenticacaoHandler)
+	o.handlers["POST"]["/auth"] = auth.NewValidaCredenciais(o.context, o.AuthValidaCredenciaisHandler)
 
 }
 

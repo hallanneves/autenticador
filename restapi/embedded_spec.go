@@ -40,23 +40,26 @@ func init() {
           "auth"
         ],
         "summary": "Valida um usuário e senha",
-        "operationId": "validaAutenticacao",
+        "operationId": "validaCredenciais",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Autenticacao"
+              "$ref": "#/definitions/Credenciais"
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Status 200"
+          "200": {
+            "description": "Status 200, Success"
+          },
+          "401": {
+            "description": "Status 401, StatusUnauthorized"
           },
           "500": {
-            "description": "Status 500",
+            "description": "Status 500, StatusInternalServerError",
             "schema": {
               "$ref": "#/definitions/Erro"
             }
@@ -66,7 +69,7 @@ func init() {
     }
   },
   "definitions": {
-    "Autenticacao": {
+    "Credenciais": {
       "type": "object",
       "required": [
         "usuario",
@@ -74,7 +77,7 @@ func init() {
       ],
       "properties": {
         "senha": {
-          "description": "Senha do circuito",
+          "description": "Senha de acesso",
           "type": "string",
           "maxLength": 200,
           "minLength": 1
@@ -136,23 +139,26 @@ func init() {
           "auth"
         ],
         "summary": "Valida um usuário e senha",
-        "operationId": "validaAutenticacao",
+        "operationId": "validaCredenciais",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Autenticacao"
+              "$ref": "#/definitions/Credenciais"
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Status 200"
+          "200": {
+            "description": "Status 200, Success"
+          },
+          "401": {
+            "description": "Status 401, StatusUnauthorized"
           },
           "500": {
-            "description": "Status 500",
+            "description": "Status 500, StatusInternalServerError",
             "schema": {
               "$ref": "#/definitions/Erro"
             }
@@ -162,7 +168,7 @@ func init() {
     }
   },
   "definitions": {
-    "Autenticacao": {
+    "Credenciais": {
       "type": "object",
       "required": [
         "usuario",
@@ -170,7 +176,7 @@ func init() {
       ],
       "properties": {
         "senha": {
-          "description": "Senha do circuito",
+          "description": "Senha de acesso",
           "type": "string",
           "maxLength": 200,
           "minLength": 1
