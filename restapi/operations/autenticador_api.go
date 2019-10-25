@@ -20,8 +20,6 @@ import (
 	"github.com/go-openapi/swag"
 
 	"github.com/hallanneves/autenticador/restapi/operations/auth"
-
-	models "github.com/hallanneves/autenticador/models"
 )
 
 // NewAutenticadorAPI creates a new Autenticador instance
@@ -41,22 +39,13 @@ func NewAutenticadorAPI(spec *loads.Document) *AutenticadorAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		JSONProducer:        runtime.JSONProducer(),
-		AuthValidaCredenciaisHandler: auth.ValidaCredenciaisHandlerFunc(func(params auth.ValidaCredenciaisParams, principal *models.Token) middleware.Responder {
+		AuthValidaCredenciaisHandler: auth.ValidaCredenciaisHandlerFunc(func(params auth.ValidaCredenciaisParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation AuthValidaCredenciais has not yet been implemented")
 		}),
-
-		// Applies when the "api_key" header is set
-		APIKeyAuth: func(token string) (*models.Token, error) {
-			return nil, errors.NotImplemented("api key auth (api_key) api_key from header param [api_key] has not yet been implemented")
-		},
-
-		// default authorizer is authorized meaning no requests are blocked
-		APIAuthorizer: security.Authorized(),
 	}
 }
 
-/*AutenticadorAPI Essa API foi desenvolvida para gerenciar o servico de autenticacao de usuario em um microserviço genérico.
-É necesário um tokem de acesso para a aplicação acessar a API de autenticação. Pode ser removido mediante analise do projeto. */
+/*AutenticadorAPI Essa API foi desenvolvida para gerenciar o servico de autenticacao de usuario em um microserviço genérico. */
 type AutenticadorAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
@@ -83,13 +72,6 @@ type AutenticadorAPI struct {
 
 	// JSONProducer registers a producer for a "application/json" mime type
 	JSONProducer runtime.Producer
-
-	// APIKeyAuth registers a function that takes a token and returns a principal
-	// it performs authentication based on an api key api_key provided in the header
-	APIKeyAuth func(string) (*models.Token, error)
-
-	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
-	APIAuthorizer runtime.Authorizer
 
 	// AuthValidaCredenciaisHandler sets the operation handler for the valida credenciais operation
 	AuthValidaCredenciaisHandler auth.ValidaCredenciaisHandler
@@ -156,10 +138,6 @@ func (o *AutenticadorAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.APIKeyAuth == nil {
-		unregistered = append(unregistered, "APIKeyAuth")
-	}
-
 	if o.AuthValidaCredenciaisHandler == nil {
 		unregistered = append(unregistered, "auth.ValidaCredenciaisHandler")
 	}
@@ -179,27 +157,14 @@ func (o *AutenticadorAPI) ServeErrorFor(operationID string) func(http.ResponseWr
 // AuthenticatorsFor gets the authenticators for the specified security schemes
 func (o *AutenticadorAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
 
-	result := make(map[string]runtime.Authenticator)
-	for name := range schemes {
-		switch name {
-
-		case "api_key":
-
-			scheme := schemes[name]
-			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, func(token string) (interface{}, error) {
-				return o.APIKeyAuth(token)
-			})
-
-		}
-	}
-	return result
+	return nil
 
 }
 
 // Authorizer returns the registered authorizer
 func (o *AutenticadorAPI) Authorizer() runtime.Authorizer {
 
-	return o.APIAuthorizer
+	return nil
 
 }
 

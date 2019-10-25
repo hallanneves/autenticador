@@ -9,21 +9,19 @@ import (
 	"net/http"
 
 	middleware "github.com/go-openapi/runtime/middleware"
-
-	models "github.com/hallanneves/autenticador/models"
 )
 
 // ValidaCredenciaisHandlerFunc turns a function with the right signature into a valida credenciais handler
-type ValidaCredenciaisHandlerFunc func(ValidaCredenciaisParams, *models.Token) middleware.Responder
+type ValidaCredenciaisHandlerFunc func(ValidaCredenciaisParams, interface{}) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn ValidaCredenciaisHandlerFunc) Handle(params ValidaCredenciaisParams, principal *models.Token) middleware.Responder {
+func (fn ValidaCredenciaisHandlerFunc) Handle(params ValidaCredenciaisParams, principal interface{}) middleware.Responder {
 	return fn(params, principal)
 }
 
 // ValidaCredenciaisHandler interface for that can handle valid valida credenciais params
 type ValidaCredenciaisHandler interface {
-	Handle(ValidaCredenciaisParams, *models.Token) middleware.Responder
+	Handle(ValidaCredenciaisParams, interface{}) middleware.Responder
 }
 
 // NewValidaCredenciais creates a new http.Handler for the valida credenciais operation
@@ -62,9 +60,9 @@ func (o *ValidaCredenciais) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		r = aCtx
 	}
-	var principal *models.Token
+	var principal interface{}
 	if uprinc != nil {
-		principal = uprinc.(*models.Token) // this is really a models.Token, I promise
+		principal = uprinc
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

@@ -3,7 +3,6 @@
 /*
 Package restapi Autenticador
 Essa API foi desenvolvida para gerenciar o servico de autenticacao de usuario em um microserviço genérico.
- É necesário um tokem de acesso para a aplicação acessar a API de autenticação. Pode ser removido mediante analise do projeto.
 
 
     Schemes:

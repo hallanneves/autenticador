@@ -24,7 +24,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "Essa API foi desenvolvida para gerenciar o servico de autenticacao de usuario em um microserviço genérico.\n É necesário um tokem de acesso para a aplicação acessar a API de autenticação. Pode ser removido mediante analise do projeto.",
+    "description": "Essa API foi desenvolvida para gerenciar o servico de autenticacao de usuario em um microserviço genérico.",
     "title": "Autenticador",
     "version": "1.0"
   },
@@ -97,17 +97,6 @@ func init() {
           "type": "string"
         }
       }
-    },
-    "Token": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "securityDefinitions": {
-    "api_key": {
-      "type": "apiKey",
-      "name": "api_key",
-      "in": "header"
     }
   },
   "security": [
@@ -123,7 +112,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "Essa API foi desenvolvida para gerenciar o servico de autenticacao de usuario em um microserviço genérico.\n É necesário um tokem de acesso para a aplicação acessar a API de autenticação. Pode ser removido mediante analise do projeto.",
+    "description": "Essa API foi desenvolvida para gerenciar o servico de autenticacao de usuario em um microserviço genérico.",
     "title": "Autenticador",
     "version": "1.0"
   },
@@ -196,17 +185,6 @@ func init() {
           "type": "string"
         }
       }
-    },
-    "Token": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "securityDefinitions": {
-    "api_key": {
-      "type": "apiKey",
-      "name": "api_key",
-      "in": "header"
     }
   },
   "security": [
