@@ -4,12 +4,17 @@ package restapi
 
 import (
 	"crypto/tls"
+	"log"
 	"net/http"
+	"os"
 
 	errors "github.com/go-openapi/errors"
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/swag"
 
+	"github.com/hallanneves/autenticador/autenticador"
+	"github.com/hallanneves/autenticador/conf"
 	"github.com/hallanneves/autenticador/restapi/operations"
 	"github.com/hallanneves/autenticador/restapi/operations/auth"
 
@@ -17,9 +22,18 @@ import (
 )
 
 //go:generate swagger generate server --target ../../autenticador --name Autenticador --spec ../swagger.yaml --principal models.Token
+var autenticadorFlags = struct {
+	ConfigFile string `long:"ConfigFile" description:"Arquivo de configuracao padrao (default: conf/conf.json)" default:"conf/conf.json"`
+}{}
 
 func configureFlags(api *operations.AutenticadorAPI) {
-	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
+	api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{
+		swag.CommandLineOptionsGroup{
+			ShortDescription: "Autenticador Flags",
+			LongDescription:  "",
+			Options:          &autenticadorFlags,
+		},
+	}
 }
 
 func configureAPI(api *operations.AutenticadorAPI) http.Handler {
@@ -38,7 +52,11 @@ func configureAPI(api *operations.AutenticadorAPI) http.Handler {
 
 	// Applies when the "api_key" header is set
 	api.APIKeyAuth = func(token string) (*models.Token, error) {
-		return nil, errors.NotImplemented("api key auth (api_key) api_key from header param [api_key] has not yet been implemented")
+		if token == conf.ConfigConecta.APIKey {
+			prin := models.Token(token)
+			return &prin, nil
+		}
+		return nil, errors.New(401, "Unauthorized")
 	}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
@@ -46,9 +64,9 @@ func configureAPI(api *operations.AutenticadorAPI) http.Handler {
 	//
 	// Example:
 	// api.APIAuthorizer = security.Authorized()
-	if api.AuthValidaAutenticacaoHandler == nil {
-		api.AuthValidaAutenticacaoHandler = auth.ValidaAutenticacaoHandlerFunc(func(params auth.ValidaAutenticacaoParams, principal *models.Token) middleware.Responder {
-			return middleware.NotImplemented("operation auth.ValidaAutenticacao has not yet been implemented")
+	if api.AuthValidaCredenciaisHandler == nil {
+		api.AuthValidaCredenciaisHandler = auth.ValidaCredenciaisHandlerFunc(func(params auth.ValidaCredenciaisParams, principal *models.Token) middleware.Responder {
+			return middleware.NotImplemented("operation auth.ValidaCredenciais has not yet been implemented")
 		})
 	}
 
@@ -67,6 +85,22 @@ func configureTLS(tlsConfig *tls.Config) {
 // This function can be called multiple times, depending on the number of serving schemes.
 // scheme value will be set accordingly: "http", "https" or "unix"
 func configureServer(s *http.Server, scheme, addr string) {
+
+	//* Le o arquivo de configuracao
+	var err error
+	err = conf.LerConfig(autenticadorFlags.ConfigFile)
+	if err != nil {
+		log.Println("Erro leitura de arquivo de configuracao: " + err.Error())
+		os.Exit(255)
+	}
+
+	//* Inicializa o Mysql
+	err = autenticador.InicializaMysql()
+	if err != nil {
+		log.Println("Erro conexao com Mysql: " + err.Error())
+		os.Exit(255)
+	}
+
 }
 
 // The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
