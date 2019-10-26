@@ -18,8 +18,6 @@ type sqlConf struct {
 }
 
 var mysqlpool []sqlConf
-var mysqlstatus *sql.DB
-
 var globalMutex sync.RWMutex
 
 // InicializaMysql inicializa conexao com o cluster Mysql
