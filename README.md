@@ -2,6 +2,10 @@
 
 API de validação de Login
 
+###Documentação
+
+https://hallanneves.github.io/autenticador/
+
 ## Escopo proposto
 
 Solução de estrangulamento de um módulo de um monolito para micro serviço.
