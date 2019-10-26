@@ -11,16 +11,19 @@ import (
 	models "github.com/hallanneves/autenticador/models"
 )
 
+//contador para distribuição das conexões do mysql
+var contadorConexao = 0
+
+//Estruturas ecessárias para a cache
 type cache struct {
 	tempo    time.Time
 	password string
 }
 
-var contadorConexao = 0
-
 var listaCache = make(map[string]*cache)
 var mutexLista sync.Mutex
 
+//senhaHash converte uma string para hash SHA256
 func senhaHash(senha string) string {
 	//Converte para Sha256
 	hash := sha256.New()
