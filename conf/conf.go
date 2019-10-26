@@ -17,7 +17,6 @@ type Mysql struct {
 
 // Config struct definindo chave
 type Config struct {
-	APIKey    string  `json:"api_key"`
 	MySQLPool []Mysql `json:"mysql"`
 }
 
@@ -28,10 +27,6 @@ var globalMutex sync.RWMutex
 // LerConfig retorna config
 func LerConfig(ConfigFile string) error {
 	globalMutex.Lock()
-	if len(ConfigConecta.APIKey) > 0 {
-		globalMutex.Unlock()
-		return nil
-	}
 	jsonFile, err := os.Open(ConfigFile)
 	defer jsonFile.Close()
 	if err != nil {
