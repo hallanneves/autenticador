@@ -13,7 +13,7 @@ Os requisitos atendidos:
 
 - Maior robustez possível;
 - Tempo de resposta abaixo de 50ms
-- Apresentar um teste de carga com x requisições por segundo e y threds
+- Apresentar um teste de carga com x requisições por segundo e y threads
 
 ## Decisões e justificativas
 
@@ -21,15 +21,15 @@ Os requisitos atendidos:
 
 #### Cache
 
-Feita no pŕprio GO, em memória para tratar requisições repetitivas e tentativas de força bruta, poderia ser utilizando Redis ou Memcached mas levaria mais tempo de desenvolvimento
+Feita no próprio GO, em memória para tratar requisições repetitivas e tentativas de força bruta, poderia ser utilizando Redis ou Memcached mas levaria mais tempo de desenvolvimento
 
 #### Mensageria
 
-O serviço tem que ser "atômico", uma fila atrasaria e iria enfileirar requisições. O mais indicado é usar um proxy e um sistema de deploy automatico com docker (o rancher ajuda a fazer isso) para criar mais instancia de resposta conforme o sistema for crescendo.
+O serviço tem que ser "atômico", uma fila atrasaria e iria enfileirar requisições. O mais indicado é usar um proxy e um sistema de deploy automático com docker para criar mais instância de resposta conforme o sistema for crescendo.
 
 #### GraphQL
 
-Esse serviço não tem a necessidade de buscar atributos especificos então optei por fazer uma API estatica.
+Esse serviço não tem a necessidade de buscar atributos especificos, então optei por fazer uma API estática.
 
 #### Documentação da API
 
@@ -40,8 +40,8 @@ Swegger 2.0.
 Servidor de API (Pode ser n)
 2 MySql (Pode ser n) com dados replicados
 
-O serviço implementado da suporte a utlização de um cluster de servidores mysql podendo ter ser desenpenho aumentado em caso de lentidão de banco.
-O serviço implementado consome o npumero de threads disponível no va VM, docker ou HOST pois o WEB Server do GO por padrão já vem habilitado. É possível alterar o número de proc(threads) do GO se necesário.
+O serviço implementado da suporte a utlização de um cluster de servidores mysql podendo ter seu desempenho aumentado em caso de lentidão de banco.
+O serviço implementado consome o número de threads disponível na VM, docker ou HOST pois o WEB Server do GO por padrão já vem habilitado. É possível alterar o número de proc(threads) do GO se necessário.
 
 ## Testes
 
@@ -75,7 +75,7 @@ sys	0m0,000s
 
 ### Requisições simultâneas
 
-#### Com saita de terminal para cada requisação
+#### Com saída de terminal para cada requisação
 
 Requisitor 790 start
 Requisitor 787, resposta 401 Unauthorized
