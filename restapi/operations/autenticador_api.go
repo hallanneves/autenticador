@@ -39,7 +39,7 @@ func NewAutenticadorAPI(spec *loads.Document) *AutenticadorAPI {
 		BearerAuthenticator: security.BearerAuth,
 		JSONConsumer:        runtime.JSONConsumer(),
 		JSONProducer:        runtime.JSONProducer(),
-		AuthValidaCredenciaisHandler: auth.ValidaCredenciaisHandlerFunc(func(params auth.ValidaCredenciaisParams, principal interface{}) middleware.Responder {
+		AuthValidaCredenciaisHandler: auth.ValidaCredenciaisHandlerFunc(func(params auth.ValidaCredenciaisParams) middleware.Responder {
 			return middleware.NotImplemented("operation AuthValidaCredenciais has not yet been implemented")
 		}),
 	}

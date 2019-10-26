@@ -98,12 +98,7 @@ func init() {
         }
       }
     }
-  },
-  "security": [
-    {
-      "api_key": []
-    }
-  ]
+  }
 }`))
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
   "schemes": [
@@ -186,11 +181,6 @@ func init() {
         }
       }
     }
-  },
-  "security": [
-    {
-      "api_key": []
-    }
-  ]
+  }
 }`))
 }

@@ -15,13 +15,12 @@ import (
 
 	"github.com/hallanneves/autenticador/autenticador"
 	"github.com/hallanneves/autenticador/conf"
+	"github.com/hallanneves/autenticador/models"
 	"github.com/hallanneves/autenticador/restapi/operations"
 	"github.com/hallanneves/autenticador/restapi/operations/auth"
-
-	models "github.com/hallanneves/autenticador/models"
 )
 
-//go:generate swagger generate server --target ../../autenticador --name Autenticador --spec ../swagger.yaml --principal models.Token
+//go:generate swagger generate server --target ../../autenticador --name Autenticador --spec ../swagger.yaml
 var autenticadorFlags = struct {
 	ConfigFile string `long:"ConfigFile" description:"Arquivo de configuracao padrao (default: conf/conf.json)" default:"conf/conf.json"`
 }{}
@@ -50,25 +49,19 @@ func configureAPI(api *operations.AutenticadorAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	// Applies when the "api_key" header is set
-	api.APIKeyAuth = func(token string) (*models.Token, error) {
-		if token == conf.ConfigConecta.APIKey {
-			prin := models.Token(token)
-			return &prin, nil
+	api.AuthValidaCredenciaisHandler = auth.ValidaCredenciaisHandlerFunc(func(params auth.ValidaCredenciaisParams) middleware.Responder {
+		status, err := autenticador.ValidaAutenticacao(params.Body)
+		if err == nil {
+			if status == 200 {
+				return auth.NewValidaCredenciaisOK()
+			} else if status == 401 {
+				return auth.NewValidaCredenciaisUnauthorized()
+			}
 		}
-		return nil, errors.New(401, "Unauthorized")
-	}
-
-	// Set your custom authorizer if needed. Default one is security.Authorized()
-	// Expected interface runtime.Authorizer
-	//
-	// Example:
-	// api.APIAuthorizer = security.Authorized()
-	if api.AuthValidaCredenciaisHandler == nil {
-		api.AuthValidaCredenciaisHandler = auth.ValidaCredenciaisHandlerFunc(func(params auth.ValidaCredenciaisParams, principal *models.Token) middleware.Responder {
-			return middleware.NotImplemented("operation auth.ValidaCredenciais has not yet been implemented")
-		})
-	}
+		mensagem := models.Erro{Mensagem: err.Error()}
+		log.Println(err.Error())
+		return auth.NewValidaCredenciaisInternalServerError().WithPayload(&mensagem)
+	})
 
 	api.ServerShutdown = func() {}
 
