@@ -81,6 +81,8 @@ sys	0m0,000s
 
 #### Com saída de terminal para cada requisação
 
+Esse teste demonstra o tempo que o meu software de teste conseguiu fazer 800 requisições e não o maximo de requisições por segundo que o servidor suporta.
+
 Requisitor 790 start
 Requisitor 787, resposta 401 Unauthorized
 Requisitor 791 start
