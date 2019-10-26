@@ -7,8 +7,6 @@ basePath: "/v1"
 schemes:
 - "http"
 - "https"
-security:
-- api_key: []
 paths:
   /auth:
     post:
