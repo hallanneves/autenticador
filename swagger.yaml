@@ -14,7 +14,6 @@ paths:
       - "auth"
       summary: "Valida um usuário e senha"
       description: "O sistema valida os usuários e senha fazendo cache de dados do usuário por 10 segundos. Em caso de troca de senha é necesário aguardar esse tempo para realizar novas tentativas.\n\
-      \ Requisições do mesmo IP ou usuário com a senha errada 5 vezes entrão na fila de bloqueio e permanecem lá por 3 min. *Podendomos futuramente colocar o IP do cliente no FireWall do SO.*\n\
       \ O sistema de autenticação tem como restrição senhas de no mínimo 6 caracteres e no máximo 200.\n\
         \ As autenticação tem como resposta OK, 200, ou erro de autenticação.\n"
       operationId: "validaCredenciais"
