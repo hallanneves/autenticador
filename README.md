@@ -34,7 +34,6 @@ Esse serviço não tem a necessidade de buscar atributos especificos então opte
 #### Documentação da API
 
 Swegger 2.0.
-//TODO:Justificar
 
 ### Infraestrutura
 
