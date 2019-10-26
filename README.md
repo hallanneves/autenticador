@@ -2,7 +2,7 @@
 
 API de validação de Login
 
-###Documentação
+### Documentação
 
 https://hallanneves.github.io/autenticador/
 
